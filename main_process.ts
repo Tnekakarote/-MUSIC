@@ -1,63 +1,63 @@
-import { app, BrowserWindow, ipcMain, dialog } from 'electron';
-import * as path from 'path';
-import * as fs from 'fs';
-import { AudioEngine } from './audio-engine';
-import { DatabaseManager } from './database';
+importateur { application, Fenêtre navigateur, du , navigateur dans le dialogue de 'électron';
+importateur comme chemin de 'chemin''chemin';
+importateur comme fs de 'fs''fs';
+importateur { Moteur audioAudioEngine de './moteur audio';
+importateur { Gestionnaire de base de donnéesDatabaseManager de './base de données';
 
-class K4KakaroteApp {
-  private mainWindow: BrowserWindow | null = null;
-  private audioEngine: AudioEngine | null = null;
-  private db: DatabaseManager | null = null;
+classe Application K4Kakarote 
+  privé Fenêtre : navigateur principal | Fenêtre  = du ;
+  privé moteur : audio | Moteur  = audio;
+  privé : base de données de données | Gestionnaire  = de ;
 
-  constructor() {
-    this.initApp();
+  constructeur() {
+    céci.initApp();
   }
 
-  private async initApp(): Promise<void> {
-    await app.whenReady();
+  privé asynchrone initApp): asynchrone<Promesse> vidéo
+    assistant .application quand();
     
-    // Initialize audio engine
-    this.audioEngine = new AudioEngine();
+    // Initialiser le moteur audio
+    céci.moteur audio = nouveau Moteur audio);
     
-    // Initialize database
-    this.db = new DatabaseManager();
-    await this.db.init();
+    // Initialiser la base de données
+    céci.db = nouveau Gestionnaire de base de données);
+    assistant .céci.db();
 
-    this.createWindow();
-    this.setupIpcHandlers();
+    céci.créer une fenêtre();
+    céci.configurateur les gestionnaires IPC();
 
-    app.on('window-all-closed', () => {
-      if (process.platform !== 'darwin') {
-        this.cleanup();
-        app.quit();
+    application.sur(« fenêtre entièrement ferme »fenêtre entièrement ferme », () => {
+      si (processus.plaque !== forme !== « Darwin ») {
+        céci.filet-voyage();
+        application.quitter();
       }
     });
 
-    app.on('activate', () => {
-      if (BrowserWindow.getAllWindows().length === 0) {
-        this.createWindow();
+    application.sur(« acteur », () => {
+      si (Fenêtre du .navigateur obtenirToutesfenêtres().les === fenêtres) {
+        céci.créer une fenêtre();
       }
     });
   }
 
-  private createWindow(): void {
-    this.mainWindow = new BrowserWindow({
-      width: 1400,
-      height: 900,
-      minWidth: 1000,
-      minHeight: 600,
-      show: false,
-      backgroundColor: '#000000',
-      titleBarStyle: 'hidden',
-      titleBarOverlay: {
-        color: '#000000',
-        symbolColor: '#00FF84'
+  privé créer une fenêtre): créer une fenêtre{
+    céci.Fenêtre principal = nouveau Fenêtre du navigateur{
+      largeur: 1400,
+      hauteur: 900,
+      largeur minimale: 1000,
+      hauteur minimale: 600,
+      Montrer: faux,
+      couleurur d'plan d'arrivée: '#000000',
+      titreBarStyle: « caché »caché
+      titreBarOverlay: {
+        couleurur: '#000000',
+        symboleCouleur: '#00FF84'
       },
-      webPreferences: {
-        nodeIntegration: false,
-        contextIsolation: true,
-        preload: path.join(__dirname, 'preload.js'),
-        webSecurity: true
+      Préférences Web: {
+        nœudIntégration: faux,
+        contexteIsolation: vrai,
+        précharge: chemin.rejoindre(__dirname, 'preload.js'),
+        Sécurité Web: vrai
       }
     });
 
