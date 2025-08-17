@@ -1,65 +1,65 @@
-importateur { contextePont, ipcRenderer } de 'électron';
+import { contextBridge, ipcRenderer } from 'electron';
 
-// Interface pour l'API exposée au rendu
-exportateur interface API électronique {
-  // Contrôle audio
+// Interface pour l'API exposée au renderer
+export interface ElectronAPI {
+  // Audio control
   audio: {
-    jouer: (chemin du fichier : chaise) => Promesse<booléen>;
-    pause: () => Promesse<vidéo>;
-    arrêt: () => Promesse<vidéo>;
-    chercheur: (position: nombre) => Promesse<vidéo>;
-    DéfinirVolume: (volume: nombre) => Promesse<vidéo>;
-    obtenirPosition: () => Promesse<nombre>;
-    obtenirDurée: () => Promesse<nombre>;
-    getBitPerfectStatus: () => Promesse<Statut BitPerfect>;
-    setWasapiExclusive: (exclusif: booléen) => Promesse<vidéo>;
-    obtention des vêtements audio: () => Promesse<Équipement audio[]>;
-    DéfinirAudioDevice: (ID de périphérique: chaise) => Promesse<vidéo>;
+    play: (filePath: string) => Promise<boolean>;
+    pause: () => Promise<void>;
+    stop: () => Promise<void>;
+    seek: (position: number) => Promise<void>;
+    setVolume: (volume: number) => Promise<void>;
+    getPosition: () => Promise<number>;
+    getDuration: () => Promise<number>;
+    getBitPerfectStatus: () => Promise<BitPerfectStatus>;
+    setWasapiExclusive: (exclusive: boolean) => Promise<void>;
+    getAudioDevices: () => Promise<AudioDevice[]>;
+    setAudioDevice: (deviceId: string) => Promise<void>;
   };
 
-  // Système de fichers
-  dialogue: {
-    dossier de sélection: () => Promesse<chaise | nul>;
-    sélectionneurFichiers: () => Promesse<chaise[]>;
+  // File system
+  dialog: {
+    selectFolder: () => Promise<string | null>;
+    selectFiles: () => Promise<string[]>;
   };
 
-  // Gestion de bibliothèque
-  bibliothèque: {
-    balayage: (chemin du dossier: chaise) => Promesse<Piste[]>;
-    obtention des pistes: () => Promesse<Piste[]>;
-    getTracksByFolder: (chemin du dossier: chaise) => Promesse<Piste[]>;
+  // Library management
+  library: {
+    scan: (folderPath: string) => Promise<Track[]>;
+    getTracks: () => Promise<Track[]>;
+    getTracksByFolder: (folderPath: string) => Promise<Track[]>;
   };
 
-  // Gestion des listes de conférences
-  liste de conférence: {
-    créer: (nom: chaise) => Promesse<nombre>;
-    obtenirTout: () => Promesse<Liste de conférence[]>;
-    Jouteur une piste: (liste de lectureId: nombre, ID de piste: nombre) => Promesse<vidéo>;
+  // Playlist management
+  playlist: {
+    create: (name: string) => Promise<number>;
+    getAll: () => Promise<Playlist[]>;
+    addTrack: (playlistId: number, trackId: number) => Promise<void>;
   };
 
-  // Auditeurs d'événements
-  sur: (canal: chaise, rappel: (...args: n'importe lequel[]) => vidéo) => vidéo;
- supprimerAllListeners : (canal: chaise) => vidéo;
+  // Event listeners
+  on: (channel: string, callback: (...args: any[]) => void) => void;
+  removeAllListeners: (channel: string) => void;
 }
 
 // Types
-interface Piste {
- id?: nombre;
- chemin : chaîne ;
- nom de fichier : chaîne ;
-  titre?: chaise;
- artiste ?: chaise;
- album ?: chaîne;
- durée: nombre;
- exempleTaux : nombre ;
- bitDépendance: nombre;
- canaux : nombre ;
-  format: chaise;
+interface Track {
+  id?: number;
+  path: string;
+  filename: string;
+  title?: string;
+  artist?: string;
+  album?: string;
+  duration: number;
+  sampleRate: number;
+  bitDepth: number;
+  channels: number;
+  format: string;
 }
 
-interface Statut BitPerfect {
-  estBitPerfect: booléen;
-  raison: chaise;
+interface BitPerfectStatus {
+  isBitPerfect: boolean;
+  reason: string;
   deviceSampleRate?: number;
   fileSampleRate?: number;
   deviceBitDepth?: number;
