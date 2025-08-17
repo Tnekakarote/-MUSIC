@@ -1,0 +1,11 @@
+"build": {
+  "appId": "com.k4kakarote.music",
+  "productName": "K4KAKAROTE MUSIC",
+  "files": ["dist/**/*", "assets/**/*", "package.json"],
+  "directories": {
+    "buildResources": "assets/icons"
+  },
+  "win": {
+    "target": ["nsis", "portable"]
+  }
+}
